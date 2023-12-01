@@ -1,0 +1,40 @@
+<p>قائمة الحجوزات تعمل!</p>
+<div class="container mt-4" dir="rtl" id="bookingTable">
+  <h2>قائمة الحجوزات</h2>
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">جار التحميل...</span>
+    </div>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    خطأ: {{ errorMessage }}
+  </div>
+  <table class="table table-striped" *ngIf="bookings.length > 0 && !isLoading">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">الاسم الكامل</th>
+        <th scope="col">العمر</th>
+        <th scope="col">الهاتف</th>
+        <th scope="col">رقم الحجز</th>
+        <th scope="col">اسم الطبيب</th>
+        <th scope="col">التخصص</th>
+        <th scope="col">تاريخ الزيارة</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ booking.fullName }}</td>
+        <td>{{ booking.age }}</td>
+        <td>{{ booking.phoneNumber }}</td>
+        <td>{{ booking.bookingNumber }}</td>
+        <td>{{ booking.visit?.doctorName }}</td>
+        <td>{{ booking.visit?.specialty }}</td>
+        <td>{{ booking.visit?.visitDate | date : "mediumDate" }}</td>
+      </tr>
+    </tbody>
+    <button class="btn btn-primary" (click)="printPDF()">Print as PDF</button>
+
+  </table>
+</div>

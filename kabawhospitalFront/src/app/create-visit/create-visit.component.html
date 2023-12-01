@@ -1,0 +1,99 @@
+<div class="container mt-3" dir="rtl">
+    <h2>إنشاء زيارة الطبيب</h2>
+    <form (ngSubmit)="onSubmit()" *ngIf="!isSubmitted">
+      <div class="mb-3">
+        <label for="doctorName" class="form-label">اسم الطبيب</label>
+        <input type="text" class="form-control" id="doctorName" required [(ngModel)]="visit.doctorName" name="doctorName">
+      </div>
+      <div class="mb-3">
+        <label for="specialty" class="form-label">التخصص</label>
+        <input type="text" class="form-control" id="specialty" required [(ngModel)]="visit.specialty" name="specialty">
+      </div>
+      <div class="mb-3">
+        <label for="visitDate" class="form-label">تاريخ الزيارة</label>
+        <input type="date" class="form-control" id="visitDate" required [(ngModel)]="visit.visitDate" name="visitDate">
+      </div>
+      <button type="submit" class="btn btn-primary">إنشاء الزيارة</button>
+    </form>
+    <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+      تم إنشاء الزيارة بنجاح.
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      خطأ: {{ errorMessage }}
+    </div>
+     <!-- جدول الزيارات -->
+  <div *ngIf="visits.length > 0; else noVisits" class="mt-4">
+    <h2>قائمة الزيارات</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">اسم الطبيب</th>
+          <th scope="col">التخصص</th>
+          <th scope="col">تاريخ الزيارة</th>
+          <th scope="col">الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let visit of visits; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ visit.doctorName }}</td>
+          <td>{{ visit.specialty }}</td>
+          <td>{{ visit.visitDate | date: 'mediumDate' }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="onEditVisit(visit)">تحرير</button>
+            
+            <button class="btn btn-danger btn-sm" (click)="onDeleteVisit(visit._id)">حذف</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <ng-template #noVisits>
+    <p>لا توجد زيارات متاحة.</p>
+  </ng-template>
+
+  <!-- نافذة التعديل -->
+  <!-- نموذج تعديل الزيارة -->
+  <div class="modal fade" id="editVisitModal" tabindex="-1" aria-labelledby="editVisitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editVisitModalLabel">تعديل الزيارة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #editVisitForm="ngForm" (ngSubmit)="updateVisit()">
+                    <div class="mb-3">
+                        <label for="doctorNameEdit" class="form-label">اسم الطبيب</label>
+                        <input type="text" class="form-control" id="doctorNameEdit" required [(ngModel)]="editableVisit.doctorName" name="doctorName" #doctorNameEdit="ngModel">
+                        <div *ngIf="doctorNameEdit.invalid && doctorNameEdit.touched" class="text-danger">
+                            مطلوب اسم الطبيب.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specialtyEdit" class="form-label">التخصص</label>
+                        <input type="text" class="form-control" id="specialtyEdit" required [(ngModel)]="editableVisit.specialty" name="specialty" #specialtyEdit="ngModel">
+                        <div *ngIf="specialtyEdit.invalid && specialtyEdit.touched" class="text-danger">
+                            مطلوب التخصص.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="visitDateEdit" class="form-label">تاريخ الزيارة</label>
+                        <input type="date" class="form-control" id="visitDateEdit" required [(ngModel)]="editableVisit.visitDate" name="visitDate" #visitDateEdit="ngModel">
+                        <div *ngIf="visitDateEdit.invalid && visitDateEdit.touched" class="text-danger">
+                            مطلوب تاريخ الزيارة.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="editVisitForm.invalid">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

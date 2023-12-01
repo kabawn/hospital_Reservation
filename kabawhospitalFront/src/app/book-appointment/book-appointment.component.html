@@ -1,0 +1,48 @@
+<div class="container" dir="rtl">
+    <h2>حجز موعد</h2>
+    <!-- رسالة النجاح -->
+    <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+    </div>
+
+    <!-- رسالة الخطأ -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" *ngIf="showForm">
+        <div class="mb-3">
+            <label for="visit">اختر الزيارة</label>
+            <select id="visit" class="form-select" [(ngModel)]="selectedVisitId" name="visit" required>
+                <option *ngFor="let visit of upcomingVisits" [value]="visit._id">
+                    {{ visit.doctorName }} - {{ visit.specialty }} ({{ visit.visitDate | date: 'mediumDate' }})
+                </option>
+            </select>
+        </div>
+
+        <!-- حقول الإدخال لتفاصيل المريض -->
+        <div class="mb-3">
+            <label for="fullName">الاسم الكامل</label>
+            <input type="text" id="fullName" class="form-control" [(ngModel)]="booking.fullName" name="fullName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="age">العمر</label>
+            <input type="number" id="age" class="form-control" [(ngModel)]="booking.age" name="age" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="phoneNumber">رقم الهاتف</label>
+            <input type="tel" id="phoneNumber" class="form-control" [(ngModel)]="booking.phoneNumber" name="phoneNumber" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">إرسال</button>
+    </form>
+
+    <!-- قالب لعرض عندما لا توجد زيارات -->
+    <ng-template #noVisitsTemplate>
+        <div *ngIf="!upcomingVisits.length" class="alert alert-info" role="alert">
+            لا توجد زيارات قادمة مجدولة حالياً. الرجاء العودة لاحقاً.
+        </div>
+    </ng-template>
+</div>

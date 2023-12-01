@@ -1,0 +1,13 @@
+<div class="container mt-4" dir="rtl">
+    <h1>لوحة التحكم الإدارية</h1>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dashboard/view-bookings']" routerLinkActive="active">عرض الحجوزات</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dashboard/create-visit']" routerLinkActive="active">إنشاء زيارة</a>
+      </li>
+    </ul>
+  
+    <router-outlet></router-outlet> <!-- سيتم تقديم مكونات الطفل هنا -->
+  </div>
